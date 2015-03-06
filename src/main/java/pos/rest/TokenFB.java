@@ -2,7 +2,7 @@ package pos.rest;
 
 public class TokenFB {
 
-    private String Token = "CAACEdEose0cBANgocprW13WrdBM2dk382PZC9LuAufFNaGBGHS9ZA2Tbyiw1ehdLIFkTjqx1X4h5jliqgmBgOL4a7Bw1LhSGuWiQn87W0bNnujDsLPuYuCGwYXEvedXLSHE97mC8UYdTfLiNZABtaTTNEVSxfyQT3UZAzUZAVauAiLxgeHaKCm1mOTu0kKwx4ZCqHQKTOiDOt2dkfdpiYf";
+    private String Token = "CAACEdEose0cBAHMq0p4cZBC5bMrOePO3NsqMdKiPa9YIesBEh4GswZArC5yGZBPiSHEQq1ubZB1zkhgVRowe4PfFkBAIjlnBBM2lln2iQl2FXVWP56fp3cfZASO0l1CmlZBzxnqdZCcrM5hXeFEvuI7ZCZA0Mbasf7Iy8Ua7zYPcr5osE2Tx2ZBFkJaFOpZCZBdhYKFKxsUC3OlZAIgqL1XYzsPCL";
 
     public String getToken() {
         return Token;
