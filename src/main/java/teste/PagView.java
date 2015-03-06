@@ -6,11 +6,13 @@
 package teste;
 
 import entidade.Tarefa;
+import java.io.IOException;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
+import javax.faces.context.FacesContext;
 import pos.rest.FaceRest;
 import service.ServiceFace.UserFb;
 
@@ -27,13 +29,22 @@ public class PagView implements Serializable {
     private FaceRest servico = new FaceRest();
     private UserFb amigo = new UserFb();
     private UserFb usuario = new UserFb();
-
+    private String token;
+    
     public UserFb getAmigo() {
         return amigo;
     }
 
     public Tarefa getTarefa() {
         return tarefa;
+    }
+
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
     }
 
     public void setTarefa(Tarefa tarefa) {
@@ -72,5 +83,19 @@ public class PagView implements Serializable {
         ConsumerRest cons = new ConsumerRest();
         
     }
-
+    
+    public void publicar(){
+        ConsumerRest cons = new ConsumerRest();
+        
+        servico.publicarNoFace();
+        System.out.println("deu certo;");
+    }
+    
+    public void logar() throws IOException{
+        if(servico.logar(token).equalsIgnoreCase("logado"));
+        FacesContext.getCurrentInstance().getExternalContext().redirect("index.xhtml");
+        
+    }
+    
+    
 }

@@ -5,13 +5,8 @@ import com.restfb.DefaultFacebookClient;
 import com.restfb.Facebook;
 import com.restfb.FacebookClient;
 import com.restfb.Parameter;
-import com.restfb.Version;
-import com.restfb.json.JsonObject;
-import com.restfb.json.JsonStringer;
 import com.restfb.types.FacebookType;
-import com.restfb.types.Post;
 import com.restfb.types.User;
-import entidade.Tarefa;
 import java.io.Serializable;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
@@ -45,30 +40,45 @@ public class ServiceFace implements Serializable {
 
     public List<UserFb> getAmigos() {
         User user = facebookClient.fetchObject("me", User.class, Parameter.with("metadata", 1));
-        String queryAmigos = "SELECT uid, name FROM user WHERE uid IN (SELECT target_id FROM connection WHERE source_id = " + user.getId() + " )";
+//        String queryAmigos = "SELECT uid, name FROM user WHERE uid IN (SELECT target_id FROM connection WHERE source_id = " + user.getId() + " )";
+//        List<UserFb> amigos = facebookClient.executeQuery(queryAmigos, UserFb.class);
+//        
+        
+        List<UserFb> friends = new ArrayList<>();
+        Connection<UserFb> myFriends = facebookClient.fetchConnection("me/taggable_friends", UserFb.class);
 
-        List<UserFb> amigos = facebookClient.executeQuery(queryAmigos, UserFb.class);
-
-        return amigos;
+        for (List<UserFb> myFriendsList : myFriends) {
+            for (UserFb u : myFriendsList) {
+                friends.add(u);
+            }
+        }
+        
+        return friends;
     }
 
-    public String publishTask(Tarefa tarefa) {
-        String image = "http://www.ifpb.edu.br/arquivos/imagens/icones-mapas/logo-ifpb.png";
+    public String publicar() {
 
-        String task = new JsonStringer().object().key("og:title").value(tarefa.getNome())
-                .key("og:description").value(tarefa.getDescricao())
-                .key("og:image").value(image).key("og:url")
-                .value(getPath() + String.valueOf(tarefa.getId())).endObject().toString();
-
-        FacebookType publish = facebookClient.publish(
-                "me/projetopos:servico", Post.class,
-                Parameter.with("pos", task),
-                Parameter.with("message", "Status: " + tarefa.getStatus()
-                        + " - Criador: " + this.getUsuario().getName()
-                        + " - Responsável: @[" + tarefa.getIdResponsavel() + "]"));
-
-        return publish.getId();
+        FacebookType publishMessageResponse
+                = facebookClient.publish("me/feed", FacebookType.class,
+                        Parameter.with("message", "asdasdasdsadas"));
+        System.out.println(publishMessageResponse.getId());
+        return publishMessageResponse.getId();
+        
+//        Date tomorrow = new Date(currentTimeMillis() + 1000L * 60L * 60L * 24L);
+//        Date twoDaysFromNow = new Date(currentTimeMillis() + 1000L * 60L * 60L * 48L);
+//
+//        FacebookType publishEventResponse = facebookClient.publish("me/events", Post.class,
+//                Parameter.with("name", "Party"), Parameter.with("start_time", tomorrow),
+//                Parameter.with("end_time", twoDaysFromNow));
+//        
+//        return publishEventResponse.getId();
     }
+    
+    public String logar(String token){
+        this.token.setToken(token);
+        return "logado";
+    }
+
     private String getIp() {
         InetAddress ia = null;
         try {

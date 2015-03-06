@@ -10,8 +10,10 @@ import com.restfb.types.User;
 import java.util.List;
 import javax.ws.rs.ClientErrorException;
 import javax.ws.rs.client.Client;
+import javax.ws.rs.client.Entity;
 import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.GenericType;
+import javax.ws.rs.core.MediaType;
 import service.ServiceFace.UserFb;
 
 /**
@@ -36,6 +38,10 @@ public class ConsumerRest {
         return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).get(customerType);
     }
     
-    
+    public void publishTask(Object tarefa) throws ClientErrorException {
+        WebTarget resource = webTarget;
+        resource = resource.path("publicar");        
+        resource.request(MediaType.APPLICATION_JSON).post(Entity.json(tarefa));        
+    }
     
 }

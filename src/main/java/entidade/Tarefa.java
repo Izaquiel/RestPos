@@ -15,7 +15,7 @@ import javax.persistence.TemporalType;
 import javax.persistence.Transient;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
-import org.codehaus.jackson.annotate.JsonIgnore;
+
 import service.ServiceFace.UserFb;
 
 /**
@@ -92,7 +92,7 @@ public class Tarefa implements Serializable {
     }
 
     @XmlTransient
-    @JsonIgnore
+
     public UserFb getResponsavel() {
         return responsavel;
     }
@@ -118,7 +118,7 @@ public class Tarefa implements Serializable {
     }
 
     @XmlTransient
-    @JsonIgnore
+
     public UserFb getCriador() {
         return criador;
     }
