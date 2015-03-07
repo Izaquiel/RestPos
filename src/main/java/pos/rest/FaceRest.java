@@ -12,6 +12,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import javax.ejb.EJB;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.FormParam;
 import javax.ws.rs.GET;
@@ -28,8 +29,8 @@ import service.ServiceFace.UserFb;
  */
 @Path("fbService")
 public class FaceRest implements Serializable {
-    
-    ServiceFace sf = new ServiceFace();    
+    @EJB
+    ServiceFace sf;    
     
     public FaceRest() {
     }
@@ -78,6 +79,8 @@ public class FaceRest implements Serializable {
         t.setNome(nome);
         t.setStatus(status);
         t.setDataCriacao(new Date());
+        t.setIdResponsavel(idRespon);
+        t.setPrioridade(prioridade);
         
         SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
         Date data;
@@ -89,7 +92,11 @@ public class FaceRest implements Serializable {
             t.setDataLimiteExecucao(new Date());
         }
         
+        System.out.println("Chegou antes do Salvar!");
+        
         sf.salvarTarefa(t);
+        
+        System.out.println("Apos o salvar!");
         
         System.out.println(t);
         

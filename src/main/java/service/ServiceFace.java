@@ -16,19 +16,24 @@ import java.util.List;
 import java.util.Objects;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.ejb.EJB;
+import javax.ejb.Stateful;
+import javax.ejb.Stateless;
+import persistencia.DaoRest;
 import pos.rest.TokenFB;
 
 /**
  *
  * @author Izaquiel
  */
+@Stateless
 public class ServiceFace implements Serializable {
 
     private final FacebookClient facebookClient;
     private TokenFB token = new TokenFB();
     
-
-//    private DaoRest<Tarefa> daoT;
+    @EJB
+    DaoRest<Tarefa> daoT;
     
     public FacebookClient getFacebookClient() {
         return facebookClient;
@@ -72,9 +77,8 @@ public class ServiceFace implements Serializable {
         return "logado" + token;
     }
     
-    public void salvarTarefa(Tarefa t){
-        
-//        daoT.salvar(t);
+    public void salvarTarefa(Tarefa t){        
+        daoT.salvar(t);
     }
 
     private String getIp() {

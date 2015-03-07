@@ -17,11 +17,11 @@ import javax.persistence.Query;
  * @author Izaquiel Cruz
  * @param <T>
  */
-//@Stateless(mappedName = "DaoRest")
-public class DaoRest<T> implements Serializable{
+@Stateless
+public class DaoRest<T>{
     
-//    @PersistenceContext(unitName = "com.mycompany_RestFBPos_war_1.0-SNAPSHOTPU")
-    private EntityManager em = Persistence.createEntityManagerFactory("com.mycompany_RestFBPos_war_1.0-SNAPSHOTPU").createEntityManager();
+    @PersistenceContext(unitName = "com.mycompany_RestFBPos_war_1.0-SNAPSHOTPU")
+    private EntityManager em;
     
     public void salvar(Object novo){
         em.persist(novo);
