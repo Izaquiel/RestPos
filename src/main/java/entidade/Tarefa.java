@@ -1,12 +1,9 @@
 package entidade;
 
-import com.restfb.types.User;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.Objects;
 import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -42,14 +39,13 @@ public class Tarefa implements Serializable {
     @Temporal(TemporalType.DATE)
     private Date dataExecucao;
 
-    @Enumerated(EnumType.STRING)
-    private Prioridade prioridade;
+    private String prioridade;
 
-    @Enumerated(EnumType.STRING)
-    private Status status;
+    private String status;
 
     @Transient
     private UserFb responsavel;
+    
     @Transient
     private UserFb criador;
 
@@ -101,19 +97,19 @@ public class Tarefa implements Serializable {
         this.responsavel = usuario;
     }
 
-    public Prioridade getPrioridade() {
+    public String getPrioridade() {
         return prioridade;
     }
 
-    public void setPrioridade(Prioridade prioridade) {
+    public void setPrioridade(String prioridade) {
         this.prioridade = prioridade;
     }
 
-    public Status getStatus() {
+    public String getStatus() {
         return status;
     }
 
-    public void setStatus(Status status) {
+    public void setStatus(String status) {
         this.status = status;
     }
 
@@ -188,6 +184,12 @@ public class Tarefa implements Serializable {
         }
         return true;
     }
+
+    @Override
+    public String toString() {
+        return "Tarefa{" + "nome=" + nome + ", descricao=" + descricao + ", dataCriacao=" + dataCriacao + ", dataLimiteExecucao=" + dataLimiteExecucao + ", prioridade=" + prioridade + ", status=" + status + ", idResponsavel=" + idResponsavel + ", idCriador=" + idCriador + '}';
+    }
+    
     
     
 }

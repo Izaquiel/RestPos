@@ -7,6 +7,7 @@ import com.restfb.FacebookClient;
 import com.restfb.Parameter;
 import com.restfb.types.FacebookType;
 import com.restfb.types.User;
+import entidade.Tarefa;
 import java.io.Serializable;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
@@ -25,7 +26,10 @@ public class ServiceFace implements Serializable {
 
     private final FacebookClient facebookClient;
     private TokenFB token = new TokenFB();
+    
 
+//    private DaoRest<Tarefa> daoT;
+    
     public FacebookClient getFacebookClient() {
         return facebookClient;
     }
@@ -40,10 +44,7 @@ public class ServiceFace implements Serializable {
 
     public List<UserFb> getAmigos() {
         User user = facebookClient.fetchObject("me", User.class, Parameter.with("metadata", 1));
-//        String queryAmigos = "SELECT uid, name FROM user WHERE uid IN (SELECT target_id FROM connection WHERE source_id = " + user.getId() + " )";
-//        List<UserFb> amigos = facebookClient.executeQuery(queryAmigos, UserFb.class);
-//        
-        
+    
         List<UserFb> friends = new ArrayList<>();
         Connection<UserFb> myFriends = facebookClient.fetchConnection("me/taggable_friends", UserFb.class);
 
@@ -63,20 +64,17 @@ public class ServiceFace implements Serializable {
                         Parameter.with("message", "asdasdasdsadas"));
         System.out.println(publishMessageResponse.getId());
         return publishMessageResponse.getId();
-        
-//        Date tomorrow = new Date(currentTimeMillis() + 1000L * 60L * 60L * 24L);
-//        Date twoDaysFromNow = new Date(currentTimeMillis() + 1000L * 60L * 60L * 48L);
-//
-//        FacebookType publishEventResponse = facebookClient.publish("me/events", Post.class,
-//                Parameter.with("name", "Party"), Parameter.with("start_time", tomorrow),
-//                Parameter.with("end_time", twoDaysFromNow));
-//        
-//        return publishEventResponse.getId();
+
     }
     
     public String logar(String token){
         this.token.setToken(token);
-        return "logado";
+        return "logado" + token;
+    }
+    
+    public void salvarTarefa(Tarefa t){
+        
+//        daoT.salvar(t);
     }
 
     private String getIp() {
