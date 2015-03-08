@@ -7,6 +7,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.persistence.Transient;
@@ -21,6 +23,7 @@ import service.ServiceFace.UserFb;
  */
 @Entity
 @XmlRootElement
+@NamedQueries({@NamedQuery(name = "buscarTarefaPorId", query = "Select t From Tarefa t where t.id = :id")})
 public class Tarefa implements Serializable {
 
     @Id

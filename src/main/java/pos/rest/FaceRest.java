@@ -18,6 +18,7 @@ import javax.ws.rs.FormParam;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import service.ServiceFace;
 import service.ServiceFace.UserFb;
@@ -39,7 +40,6 @@ public class FaceRest implements Serializable {
     @Path(value = "/friends")
     @Produces("application/json")
     public List<UserFb> getAmigos() {
-        System.out.println(sf.getAmigos());
         return sf.getAmigos();
         
     }
@@ -51,10 +51,21 @@ public class FaceRest implements Serializable {
     }
     
     @POST
+    @Path(value = "buscaTarefa")
+    @Produces({"application/x-www-form-urlencoded", "application/json"})
+    public Tarefa getTarefa(@FormParam(value = "id")String id){
+        System.out.println(id);
+        return sf.getTarefaPorId(Long.parseLong(id));
+    }
+    
+    @POST
     @Path(value = "publicar")
-    @Consumes(value = "application/json")
-    public String publicarNoFace() {
-        String resp = sf.publicar();
+    @Consumes({"application/x-www-form-urlencoded", "application/json"})
+    public String publicarNoFace(@FormParam(value = "id")String id) {
+        Tarefa t = sf.getTarefaPorId(Long.parseLong(id));
+//        sf.publishTask(t);
+        
+        String resp = sf.publicar(t);
         return resp;
     }
     
@@ -92,14 +103,8 @@ public class FaceRest implements Serializable {
             t.setDataLimiteExecucao(new Date());
         }
         
-        System.out.println("Chegou antes do Salvar!");
-        
+
         sf.salvarTarefa(t);
-        
-        System.out.println("Apos o salvar!");
-        
-        System.out.println(t);
-        
         
         return null;
         

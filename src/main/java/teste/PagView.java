@@ -30,7 +30,7 @@ public class PagView implements Serializable {
     private UserFb amigo = new UserFb();
     private UserFb usuario = new UserFb();
     private String token;
-    
+
     public UserFb getAmigo() {
         return amigo;
     }
@@ -79,23 +79,22 @@ public class PagView implements Serializable {
         this.tarefa.setResponsavel(this.amigo);
         this.tarefa.setIdResponsavel(this.amigo.getUid());
         this.tarefa.setDataCriacao(new Date());
-        
+
         ConsumerRest cons = new ConsumerRest();
-        
+
     }
-    
-    public void publicar(){
+
+    public void publicar() {
         ConsumerRest cons = new ConsumerRest();
-        
-        servico.publicarNoFace();
+
+        servico.publicarNoFace(token);
         System.out.println("deu certo;");
     }
-    
-    public void logar() throws IOException{
-        if(servico.logar(token).equalsIgnoreCase("logado"));
+
+    public void logar() throws IOException {
+        if (servico.logar(token).equalsIgnoreCase("logado"));
         FacesContext.getCurrentInstance().getExternalContext().redirect("index.xhtml");
-        
+
     }
-    
-    
+
 }

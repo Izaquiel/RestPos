@@ -5,14 +5,18 @@ import com.restfb.DefaultFacebookClient;
 import com.restfb.Facebook;
 import com.restfb.FacebookClient;
 import com.restfb.Parameter;
+import com.restfb.json.JsonStringer;
 import com.restfb.types.FacebookType;
+import com.restfb.types.Post;
 import com.restfb.types.User;
 import entidade.Tarefa;
 import java.io.Serializable;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -31,10 +35,10 @@ public class ServiceFace implements Serializable {
 
     private final FacebookClient facebookClient;
     private TokenFB token = new TokenFB();
-    
+
     @EJB
     DaoRest<Tarefa> daoT;
-    
+
     public FacebookClient getFacebookClient() {
         return facebookClient;
     }
@@ -49,7 +53,7 @@ public class ServiceFace implements Serializable {
 
     public List<UserFb> getAmigos() {
         User user = facebookClient.fetchObject("me", User.class, Parameter.with("metadata", 1));
-    
+
         List<UserFb> friends = new ArrayList<>();
         Connection<UserFb> myFriends = facebookClient.fetchConnection("me/taggable_friends", UserFb.class);
 
@@ -58,27 +62,39 @@ public class ServiceFace implements Serializable {
                 friends.add(u);
             }
         }
-        
+
         return friends;
     }
 
-    public String publicar() {
+    public String publicar(Tarefa t) {
+
+        String task = new JsonStringer().object().key("Titulo da Tarefa:").value(t.getNome())
+                .key("Descrição da Tarefa:").value(t.getDescricao())
+                .key("URL:")
+                .value(getPath() + String.valueOf(t.getId())).endObject().toString();
 
         FacebookType publishMessageResponse
                 = facebookClient.publish("me/feed", FacebookType.class,
-                        Parameter.with("message", "asdasdasdsadas"));
+                        Parameter.with("message", "Status: " + t.getStatus()
+                                + " - Criador: " + t.getIdCriador() + " Tarefa: "+task));
         System.out.println(publishMessageResponse.getId());
         return publishMessageResponse.getId();
 
     }
-    
-    public String logar(String token){
+
+    public String logar(String token) {
         this.token.setToken(token);
         return "logado" + token;
     }
-    
-    public void salvarTarefa(Tarefa t){        
+
+    public void salvarTarefa(Tarefa t) {
         daoT.salvar(t);
+    }
+
+    public Tarefa getTarefaPorId(Long id) {
+        Map<String, Long> map = new HashMap<>();
+        map.put("id", id);
+        return daoT.buscar("buscarTarefaPorId", map);
     }
 
     private String getIp() {
